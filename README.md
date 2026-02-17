@@ -20,11 +20,11 @@ Detect and investigate malicious activity using SIEM
 <h1>Lab Architecture</h1>
 🔹 Components
 
-pfSense Firewall (NAT + LAN segmentation)
+--pfSense Firewall (NAT + LAN segmentation)
 
-Suricata IDS/IPS (Network intrusion detection)
+--Suricata IDS/IPS (Network intrusion detection)
 
-Windows Server 2019 (Active Directory + DNS)
+--Windows Server 2019 (Active Directory + DNS)
 
 2 Windows 10 Endpoints
 
