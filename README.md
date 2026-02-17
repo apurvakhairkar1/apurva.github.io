@@ -20,21 +20,21 @@ Detect and investigate malicious activity using SIEM
 <h1>Lab Architecture</h1>
 🔹 Components
 
---pfSense Firewall (NAT + LAN segmentation)
+ *  pfSense Firewall (NAT + LAN segmentation)
 
---Suricata IDS/IPS (Network intrusion detection)
+ *  Suricata IDS/IPS (Network intrusion detection)
 
---Windows Server 2019 (Active Directory + DNS)
+ *  Windows Server 2019 (Active Directory + DNS)
 
-2 Windows 10 Endpoints
+ *  2 Windows 10 Endpoints
 
-Sysmon (Endpoint telemetry)
+ *  Sysmon (Endpoint telemetry)
 
-Splunk Enterprise SIEM
+ *  Splunk Enterprise SIEM
 
-Kali Linux Attacker Machine
+ *  Kali Linux Attacker Machine
 
-Virtualized using VirtualBox
+ *  Virtualized using VirtualBox
 
 <h1>Network Design</h1>
 
@@ -55,76 +55,74 @@ Virtualized using VirtualBox
 
 <h1>Firewall Configuration (pfSense)</h1>
 
-Configured WAN (NAT) and LAN segmentation
+ *  Configured WAN (NAT) and LAN segmentation
 
-Enabled DHCP for LAN clients
+ *  Enabled DHCP for LAN clients
 
-Implemented firewall rules for controlled traffic flow
+ *  Implemented firewall rules for controlled traffic flow
 
-Enabled logging for allowed and blocked traffic
+ *  Enabled logging for allowed and blocked traffic
 
-Installed and configured Suricata IDS
+ * Installed and configured Suricata IDS
 
 <h1>Suricata IDS Configuration</h1>
 
-Installed Suricata package on pfSense
+ *  Installed Suricata package on pfSense
 
-Enabled Emerging Threats ruleset
+ *  Enabled Emerging Threats ruleset
 
-Configured IDS on LAN interface
+ *  Configured IDS on LAN interface
 
-Enabled alert logging
+ *  Enabled alert logging
 
-Verified detection of:
+ *  Verified detection of:
 
-Nmap scans
+           *  Nmap scans
 
-Port scanning activity
+           *  Port scanning activity
 
-Suspicious HTTP requests
+           *  Suspicious HTTP requests
 
-SMB enumeration attempts
+           *  SMB enumeration attempts
 
 <h1>Endpoint Monitoring (Sysmon)</h1>
 
-Deployed Sysmon using SwiftOnSecurity configuration
+ *   Deployed Sysmon using SwiftOnSecurity configuration
 
-Forwarded logs to Splunk
+ *   Forwarded logs to Splunk
 
-Monitored:
+ * Monitored:
 
-Event ID 1 – Process Creation
+           *  Event ID 1 – Process Creation
 
-Event ID 3 – Network Connections
+           *  Event ID 3 – Network Connections
 
-Event ID 4624/4625 – Logon Success/Failure
+ *   Event ID 4624/4625 – Logon Success/Failure
 
-PowerShell execution
-
-Suspicious parent-child process relationships
+ *   PowerShell execution
 
 <h1>SIEM Implementation (Splunk)</h1>
 
-Installed Splunk Enterprise
+ *   Installed Splunk Enterprise
 
-Configured Universal Forwarders on endpoints
+ *   Configured Universal Forwarders on endpoints
 
-Ingested:
+ *   Ingested:
 
-Windows Security Logs
+           *   Windows Security Logs
 
-Sysmon Logs
+           *  Sysmon Logs
 
-Suricata Alerts
+           *  Suricata Alerts
 
-Firewall Logs
+           *  Firewall Logs
 
-Built detection queries for:
+ *  Built detection queries for:
 
-Brute-force login attempts
+           *  Brute-force login attempts
 
-Port scanning activity
+           *  Port scanning activity
 
-Suspicious PowerShell execution
+           *  Suspicious PowerShell execution
 
-Lateral movement indicators
+           *  Lateral movement indicators
