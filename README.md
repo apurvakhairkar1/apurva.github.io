@@ -53,3 +53,78 @@ Virtualized using VirtualBox
                           |
                       [ Splunk SIEM ]
 
+<h1>Firewall Configuration (pfSense)</h1>
+
+Configured WAN (NAT) and LAN segmentation
+
+Enabled DHCP for LAN clients
+
+Implemented firewall rules for controlled traffic flow
+
+Enabled logging for allowed and blocked traffic
+
+Installed and configured Suricata IDS
+
+<h1>Suricata IDS Configuration</h1>
+
+Installed Suricata package on pfSense
+
+Enabled Emerging Threats ruleset
+
+Configured IDS on LAN interface
+
+Enabled alert logging
+
+Verified detection of:
+
+Nmap scans
+
+Port scanning activity
+
+Suspicious HTTP requests
+
+SMB enumeration attempts
+
+<h1>Endpoint Monitoring (Sysmon)</h1>
+
+Deployed Sysmon using SwiftOnSecurity configuration
+
+Forwarded logs to Splunk
+
+Monitored:
+
+Event ID 1 – Process Creation
+
+Event ID 3 – Network Connections
+
+Event ID 4624/4625 – Logon Success/Failure
+
+PowerShell execution
+
+Suspicious parent-child process relationships
+
+<h1>SIEM Implementation (Splunk)</h1>
+
+Installed Splunk Enterprise
+
+Configured Universal Forwarders on endpoints
+
+Ingested:
+
+Windows Security Logs
+
+Sysmon Logs
+
+Suricata Alerts
+
+Firewall Logs
+
+Built detection queries for:
+
+Brute-force login attempts
+
+Port scanning activity
+
+Suspicious PowerShell execution
+
+Lateral movement indicators
