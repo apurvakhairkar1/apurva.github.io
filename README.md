@@ -126,3 +126,25 @@ Detect and investigate malicious activity using SIEM
            *  Suspicious PowerShell execution
 
            *  Lateral movement indicators
+
+  <h1>Key Outcomes</h1>  
+
+ * Successfully detected simulated reconnaissance and brute-force activity
+
+ *  Correlated endpoint and network telemetry
+
+ *  Reduced false positives through rule tuning
+
+ *  Developed reusable detection queries
+
+<h1>Future Improvements</h1>
+
+ *  Implement Wazuh for comparison with Splunk
+
+ *  Enable IPS blocking mode in Suricata
+
+ *  Add email alerting for high-severity events
+
+ *  Deploy centralized log server for long-term retention
+
+ *  Automate detection alerts
