@@ -35,3 +35,21 @@ Splunk Enterprise SIEM
 Kali Linux Attacker Machine
 
 Virtualized using VirtualBox
+
+<h1>Network Design</h1>
+
+                [ Kali Linux ]
+                      |
+                   (WAN)
+                      |
+                [ pfSense Firewall ]
+                      |
+                   (LAN 192.168.1.0/24)
+        ------------------------------------------------
+        |                     |                      |
+ [ Domain Controller ]   [ Windows 10 ]        [ Windows 10 ]
+        |                                           |
+        |-------------------------------------------|
+                          |
+                      [ Splunk SIEM ]
+
