@@ -1,6 +1,6 @@
 # apurva.github.io
 
-Enterprise SOC Homelab – Active Directory Security Monitoring Lab
+<h1>Enterprise SOC Homelab – Active Directory Security Monitoring Lab<h1>
 📌 Project Overview
 
 This project demonstrates the design and implementation of a simulated enterprise security environment for blue team training and detection engineering.
