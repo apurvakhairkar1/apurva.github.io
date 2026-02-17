@@ -16,3 +16,22 @@ Deploy endpoint and network monitoring
 Simulate real-world attack scenarios
 
 Detect and investigate malicious activity using SIEM
+
+<h1>Lab Architecture</h1>
+🔹 Components
+
+pfSense Firewall (NAT + LAN segmentation)
+
+Suricata IDS/IPS (Network intrusion detection)
+
+Windows Server 2019 (Active Directory + DNS)
+
+2 Windows 10 Endpoints
+
+Sysmon (Endpoint telemetry)
+
+Splunk Enterprise SIEM
+
+Kali Linux Attacker Machine
+
+Virtualized using VirtualBox
