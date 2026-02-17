@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Network Diagram</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #f8f9fa;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    min-height: 100vh;
+    color: #333;
+  }
+
+  h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 4px;
+    letter-spacing: .02em;
+  }
+  .subtitle {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 40px;
+  }
+
+  .diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  /* ── node card ── */
+  .node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    padding: 16px 20px 12px;
+    min-width: 140px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+
+  .node img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+  }
+
+  .node-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #222;
+  }
+
+  .node-sub {
+    font-size: 11px;
+    color: #888;
+    line-height: 1.5;
+  }
+
+  /* color accents per type */
+  .node.kali    { border-color: #e05a5a; }
+  .node.fw      { border-color: #e07c2a; }
+  .node.dc      { border-color: #5b6abf; }
+  .node.win     { border-color: #2e8def; }
+  .node.splunk  { border-color: #2ecc71; }
+
+  /* ── vertical connector ── */
+  .v-line {
+    width: 2px;
+    height: 44px;
+    background: #ccc;
+  }
+
+  /* ── label on wire ── */
+  .wire-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .wire-tag {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: calc(50% + 6px);
+    font-size: 10px;
+    color: #999;
+    white-space: nowrap;
+    background: #f8f9fa;
+    padding: 0 4px;
+  }
+
+  /* ── horizontal LAN bus ── */
+  .lan-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 760px;
+  }
+
+  .h-bus-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 0;
+  }
+  .h-line {
+    flex: 1;
+    height: 2px;
+    background: #ccc;
+  }
+  .bus-label {
+    font-size: 11px;
+    color: #555;
+    background: #fff;
+    border: 1.5px solid #ccc;
+    border-radius: 5px;
+    padding: 3px 12px;
+    white-space: nowrap;
+  }
+
+  /* ── LAN nodes row ── */
+  .lan-nodes {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 0;
+    flex-wrap: wrap;
+  }
+
+  .lan-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ── log feed to splunk ── */
+  .log-feed-row {
+    display: flex;
+    justify-content: center;
+    gap: 120px;
+    flex-wrap: wrap;
+  }
+
+  .log-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .log-line {
+    width: 2px;
+    height: 36px;
+    background: repeating-linear-gradient(
+      to bottom,
+      #2ecc71 0px, #2ecc71 5px,
+      transparent 5px, transparent 10px
+    );
+  }
+
+  /* green collection bus */
+  .green-bus-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 520px;
+  }
+  .green-line {
+    flex: 1;
+    height: 2px;
+    background: #2ecc71;
+    opacity: .5;
+  }
+  .green-label {
+    font-size: 10px;
+    color: #2ecc71;
+    background: #fff;
+    border: 1.5px solid #2ecc71;
+    border-radius: 5px;
+    padding: 2px 10px;
+    white-space: nowrap;
+  }
+
+  /* ── legend ── */
+  .legend {
+    margin-top: 44px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #666;
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<h1>Home Lab — Network Topology</h1>
+<p class="subtitle">192.168.1.0/24 · pfSense · Active Directory · Splunk SIEM</p>
+
+<div class="diagram">
+
+  <!-- INTERNET -->
+  <div class="node kali">
+    <!-- Kali Linux -->
+    <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="46" fill="#fef0f0" stroke="#e05a5a" stroke-width="2"/>
+      <path d="M50 18 L63 36 L74 32 L66 50 L80 56 L63 62 L66 82 L50 72 L34 82 L37 62 L20 56 L34 50 L26 32 L37 36 Z" fill="#e05a5a"/>
+      <circle cx="50" cy="44" r="5" fill="#fff"/>
+      <circle cx="50" cy="44" r="2.5" fill="#e05a5a"/>
+    </svg>
+    <span class="node-name">Kali Linux</span>
+    <span class="node-sub">Attacker Machine</span>
+  </div>
+
+  <!-- wire WAN -->
+  <div class="wire-wrap">
+    <div class="v-line"></div>
+    <span class="wire-tag">WAN</span>
+  </div>
+
+  <!-- PFSENSE -->
+  <div class="node fw">
+    <!-- pfSense shield -->
+    <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" rx="10" fill="#fff7f0"/>
+      <path d="M50 8 L84 22 L84 56 C84 74 66 88 50 95 C34 88 16 74 16 56 L16 22 Z" fill="#fff0e0" stroke="#e07c2a" stroke-width="2.5"/>
+      <text x="50" y="54" text-anchor="middle" font-family="monospace" font-size="22" font-weight="bold" fill="#e07c2a">pf</text>
+      <text x="50" y="68" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#cc6600">SENSE</text>
+    </svg>
+    <span class="node-name">pfSense Firewall</span>
+    <span class="node-sub">WAN ↔ LAN Gateway</span>
+  </div>
+
+  <!-- wire LAN -->
+  <div class="wire-wrap">
+    <div class="v-line"></div>
+    <span class="wire-tag">LAN</span>
+  </div>
+
+  <!-- LAN BUS -->
+  <div class="lan-wrap">
+    <div class="h-bus-row">
+      <div class="h-line"></div>
+      <div class="bus-label">192.168.1.0 / 24</div>
+      <div class="h-line"></div>
+    </div>
+
+    <!-- LAN DEVICES -->
+    <div class="lan-nodes">
+
+      <!-- Domain Controller -->
+      <div class="lan-col">
+        <div class="v-line" style="height:30px;"></div>
+        <div class="node dc">
+          <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100" height="100" rx="10" fill="#f2f3fb"/>
+            <rect x="15" y="15" width="30" height="30" rx="3" fill="#5b6abf"/>
+            <rect x="55" y="15" width="30" height="30" rx="3" fill="#4a58a8"/>
+            <rect x="15" y="55" width="30" height="30" rx="3" fill="#4a58a8"/>
+            <rect x="55" y="55" width="30" height="30" rx="3" fill="#3a4590"/>
+          </svg>
+          <span class="node-name">Domain Controller</span>
+          <span class="node-sub">192.168.1.10<br>Windows Server 2019<br>AD DS · DNS · DHCP</span>
+        </div>
+      </div>
+
+      <!-- Windows 10 #1 -->
+      <div class="lan-col">
+        <div class="v-line" style="height:30px;"></div>
+        <div class="node win">
+          <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100" height="100" rx="10" fill="#f0f7ff"/>
+            <rect x="15" y="15" width="30" height="30" rx="2" fill="#2e8def"/>
+            <rect x="55" y="15" width="30" height="30" rx="2" fill="#2e8def" opacity=".85"/>
+            <rect x="15" y="55" width="30" height="30" rx="2" fill="#2e8def" opacity=".85"/>
+            <rect x="55" y="55" width="30" height="30" rx="2" fill="#2e8def" opacity=".7"/>
+          </svg>
+          <span class="node-name">Workstation 1</span>
+          <span class="node-sub">192.168.1.20<br>Windows 10 Pro<br>User: Alice</span>
+        </div>
+      </div>
+
+      <!-- Windows 10 #2 -->
+      <div class="lan-col">
+        <div class="v-line" style="height:30px;"></div>
+        <div class="node win">
+          <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100" height="100" rx="10" fill="#f0f7ff"/>
+            <rect x="15" y="15" width="30" height="30" rx="2" fill="#2e8def"/>
+            <rect x="55" y="15" width="30" height="30" rx="2" fill="#2e8def" opacity=".85"/>
+            <rect x="15" y="55" width="30" height="30" rx="2" fill="#2e8def" opacity=".85"/>
+            <rect x="55" y="55" width="30" height="30" rx="2" fill="#2e8def" opacity=".7"/>
+          </svg>
+          <span class="node-name">Workstation 2</span>
+          <span class="node-sub">192.168.1.21<br>Windows 10 Pro<br>User: Bob</span>
+        </div>
+      </div>
+
+    </div><!-- /lan-nodes -->
+
+    <!-- LOG FEEDS TO SPLUNK -->
+    <div class="log-feed-row" style="margin-top:0;">
+      <div class="log-col"><div class="log-line"></div></div>
+      <div class="log-col"><div class="log-line"></div></div>
+      <div class="log-col"><div class="log-line"></div></div>
+    </div>
+
+    <!-- green collection bus -->
+    <div class="green-bus-row">
+      <div class="green-line"></div>
+      <div class="green-label">Syslog / Log Ingestion</div>
+      <div class="green-line"></div>
+    </div>
+
+  </div><!-- /lan-wrap -->
+
+  <!-- wire to splunk -->
+  <div class="wire-wrap">
+    <div class="v-line" style="background:#2ecc71; opacity:.5;"></div>
+  </div>
+
+  <!-- SPLUNK -->
+  <div class="node splunk">
+    <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" rx="10" fill="#f0fbf5"/>
+      <path d="M20 28 L58 50 L20 72" stroke="#2ecc71" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M42 28 L80 50 L42 72" stroke="#2ecc71" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".4"/>
+    </svg>
+    <span class="node-name">Splunk SIEM</span>
+    <span class="node-sub">192.168.1.50<br>Log Aggregation · Alerting<br>Port 8000 · 9997</span>
+  </div>
+
+</div><!-- /diagram -->
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#e05a5a"></div> Kali (Attacker)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#e07c2a"></div> pfSense (Firewall)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#5b6abf"></div> Domain Controller</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#2e8def"></div> Windows Endpoint</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Splunk SIEM</div>
+  <div class="legend-item">
+    <div style="width:20px;height:2px;background:repeating-linear-gradient(to right,#2ecc71 0,#2ecc71 4px,transparent 4px,transparent 8px)"></div>
+    Log Feed
+  </div>
+</div>
+
+</body>
+</html>
